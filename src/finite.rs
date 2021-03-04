@@ -1,12 +1,12 @@
 /// Trait to return a finite/limited iterator from a potentially infinite iterator,
 /// or just limit the output to n items
-trait ToFinite<I: Iterator> {
+pub trait ToFinite<I: Iterator> {
     fn finite(self, limit: usize) -> FiniteIterator<I>;
 }
 
 /// Finite /limited Iterator, returns n items and afterwards only None even if the wrapped iterator could still return Some.
 /// may return None sooner if the wrapped iterator runs out before limit is reached
-struct FiniteIterator<I: Iterator> {
+pub struct FiniteIterator<I: Iterator> {
     iter: I,
     count: usize,
     limit: usize,
