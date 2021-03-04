@@ -1,7 +1,11 @@
-
+/// Trait to return a finite/limited iterator from a potentially infinite iterator,
+/// or just limit the output to n items
 trait ToFinite<I: Iterator> {
     fn finite(self, limit: usize) -> FiniteIterator<I>;
 }
+
+/// Finite /limited Iterator, returns n items and afterwards only None even if the wrapped iterator could still return Some.
+/// may return None sooner if the wrapped iterator runs out before limit is reached
 struct FiniteIterator<I: Iterator> {
     iter: I,
     count: usize,
@@ -32,13 +36,18 @@ impl<T, I: Iterator<Item = T>> ToFinite<I> for I {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn finite_test1() {
-        assert_eq!(vec![1, 2, 3, 4, 5, 6, 7, 8, 9].into_iter().finite(3).collect::<Vec<u32>>(), vec![1, 2, 3]);
+        assert_eq!(
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9]
+                .into_iter()
+                .finite(3)
+                .collect::<Vec<u32>>(),
+            vec![1, 2, 3]
+        );
     }
 }

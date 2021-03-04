@@ -1,5 +1,7 @@
 use num::PrimInt;
 
+/// Iterator that generates Fibonacci numbers until the internal primitive integer type overflows.
+/// SStarts at 0, 1 by default
 pub struct Fib<T: PrimInt> {
     n1: T,
     n2: T,
@@ -7,6 +9,7 @@ pub struct Fib<T: PrimInt> {
 }
 
 impl<T: PrimInt> Fib<T> {
+    // Create new Fibonacci Iterator starting at 0, 1
     pub fn new() -> Fib<T> {
         Fib {
             n1: T::zero(),
@@ -14,14 +17,13 @@ impl<T: PrimInt> Fib<T> {
             count: 0,
         }
     }
-
-    pub fn start_at(mut self, n1: T, n2: T) -> Self {
-        self.n1 = n1;
-        self.n2 = n2;
-        self
+    // Create new Fibonacci Iterator starting at n1, n2
+    pub fn start_at(n1: T, n2: T) -> Self {
+        Fib { n1, n2, count: 0 }
     }
 }
 impl<T: PrimInt> Default for Fib<T> {
+    // Create new Fibonacci Iterator starting at 0, 1
     fn default() -> Self {
         Self::new()
     }
@@ -70,7 +72,7 @@ mod tests {
         );
 
         assert_eq!(
-            Fib::new().start_at(2, 5).collect::<Vec<u8>>(),
+            Fib::start_at(2, 5).collect::<Vec<u8>>(),
             vec![2, 5, 7, 12, 19, 31, 50, 81, 131, 212]
         )
     }
